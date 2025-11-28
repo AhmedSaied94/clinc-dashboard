@@ -176,6 +176,7 @@ cython_debug/
 # Project specific
 logs/
 *.xlsx
+!data.xlsx
 !*.example.xlsx
 Copy of clinic placment dashboard.xlsx
 ~$*.xlsx
