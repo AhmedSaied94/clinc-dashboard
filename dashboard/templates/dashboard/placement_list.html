@@ -1,18 +1,19 @@
 {% extends 'base.html' %} {% load static %} {% block title %}Placements - Clinic
 Dashboard{% endblock %} {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h1 class="h2">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-mobile-column">
+  <h1 class="h2 mb-3 mb-md-0">
     <i class="bi bi-table text-primary"></i>
     All Placements
   </h1>
-  <div class="d-flex gap-2">
-    <a href="{% url 'dashboard:placement_import' %}" class="btn btn-info">
+  <div class="d-flex gap-2 w-mobile-100">
+    <a href="{% url 'dashboard:placement_import' %}" class="btn btn-info flex-fill">
       <i class="bi bi-upload"></i>
-      Import
+      <span class="d-none d-sm-inline">Import</span>
     </a>
-    <a href="{% url 'dashboard:placement_create' %}" class="btn btn-primary">
+    <a href="{% url 'dashboard:placement_create' %}" class="btn btn-primary flex-fill">
       <i class="bi bi-plus-circle"></i>
-      Add New Placement
+      <span class="d-none d-sm-inline">Add New</span>
+      <span class="d-sm-none">Add</span>
     </a>
   </div>
 </div>
@@ -21,7 +22,7 @@ Dashboard{% endblock %} {% block content %}
 <div class="card shadow-sm mb-4">
   <div class="card-body">
     <form method="get" class="row g-3" id="searchForm">
-      <div class="col-md-5">
+      <div class="col-12 col-md-5">
         <input
           type="text"
           name="search"
@@ -30,7 +31,7 @@ Dashboard{% endblock %} {% block content %}
           value="{{ search_query }}"
         />
       </div>
-      <div class="col-md-4">
+      <div class="col-6 col-md-4">
         <select name="rows" class="form-select" id="rowsSelect">
           {% for option in rows_options %}
           <option value="{{ option }}" {% if current_rows == option|stringformat:"s" %}selected{% endif %}>
@@ -39,10 +40,10 @@ Dashboard{% endblock %} {% block content %}
           {% endfor %}
         </select>
       </div>
-      <div class="col-md-3">
+      <div class="col-6 col-md-3">
         <button type="submit" class="btn btn-primary w-100">
           <i class="bi bi-search"></i>
-          Search
+          <span class="d-none d-sm-inline">Search</span>
         </button>
       </div>
     </form>

@@ -40,11 +40,15 @@
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
     <link rel="stylesheet" href="{% static 'css/sidebar.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
 
     {% block extra_css %}{% endblock %}
   </head>
   <body data-theme="light">
     {% if not request.resolver_match.url_name == 'login' %}
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Navbar -->
     {% include 'components/navbar.html' %}
 

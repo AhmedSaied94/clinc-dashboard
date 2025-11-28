@@ -1,0 +1,551 @@
+/* ============================================
+   ENHANCED MOBILE RESPONSIVE STYLES
+   ============================================ */
+
+/* Extra Small Devices (phones, 576px and down) */
+@media (max-width: 575.98px) {
+    /* Main Layout */
+    .main-content {
+        padding-top: 56px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .container-fluid {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Sidebar - Hidden by default, overlay on show */
+    .sidebar {
+        width: 280px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1050;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    /* Sidebar Overlay */
+    .sidebar-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1040;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Navbar adjustments */
+    #mainNavbar {
+        padding: 0.75rem 1rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.125rem;
+    }
+
+    .navbar-brand span {
+        font-size: 1rem;
+    }
+
+    /* Search form in navbar */
+    .search-form {
+        display: none !important;
+    }
+
+    .navbar-collapse.show .search-form {
+        display: flex !important;
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    /* Stat Cards */
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+
+    .stat-card h3 {
+        font-size: 1.75rem;
+    }
+
+    .stat-card .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    /* Page Headers */
+    .d-flex.justify-content-between.align-items-center {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 1rem;
+    }
+
+    .d-flex.justify-content-between.align-items-center h1,
+    .d-flex.justify-content-between.align-items-center h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+    }
+
+    /* Buttons in headers */
+    .d-flex.gap-2 {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5rem !important;
+    }
+
+    .d-flex.gap-2 .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Forms */
+    .row.g-3 {
+        margin: 0;
+    }
+
+    .row.g-3 > [class*="col-"] {
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    /* Tables */
+    .table-responsive {
+        border-radius: 12px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        font-size: 0.875rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.5rem;
+        white-space: nowrap;
+    }
+
+    /* Hide less important columns on mobile */
+    .table .d-none.d-md-table-cell {
+        display: none !important;
+    }
+
+    /* Action buttons in tables */
+    .table-actions {
+        gap: 0.25rem;
+        flex-wrap: wrap;
+    }
+
+    .table-actions .btn-action {
+        width: 32px;
+        height: 32px;
+        font-size: 0.875rem;
+        padding: 0;
+    }
+
+    /* Cards */
+    .card {
+        margin-bottom: 1rem;
+        border-radius: 12px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-header {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+
+    /* Chart containers */
+    .chart-card,
+    .chart-container {
+        min-height: 250px;
+        padding: 1rem;
+    }
+
+    /* Filter panels */
+    .filter-card {
+        margin-bottom: 1rem;
+    }
+
+    .filter-card .card-body {
+        padding: 1rem;
+    }
+
+    /* Pagination */
+    .pagination {
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 1rem 0;
+    }
+
+    .pagination .page-link {
+        padding: 0.375rem 0.625rem;
+        font-size: 0.875rem;
+    }
+
+    /* Badges */
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.625rem;
+    }
+
+    /* Modals */
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+
+    .modal-content {
+        border-radius: 12px;
+    }
+
+    .modal-header,
+    .modal-footer {
+        padding: 1rem;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    /* Forms in modals */
+    .form-label {
+        font-size: 0.875rem;
+        margin-bottom: 0.375rem;
+    }
+
+    .form-control,
+    .form-select {
+        font-size: 0.875rem;
+        padding: 0.625rem;
+        min-height: 42px;
+    }
+
+    /* Empty states */
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+    }
+
+    .empty-state h4 {
+        font-size: 1.25rem;
+    }
+
+    .empty-state p {
+        font-size: 0.875rem;
+    }
+
+    /* User dropdown */
+    .dropdown-menu {
+        min-width: 200px;
+        right: 0 !important;
+        left: auto !important;
+    }
+
+    /* Avatar adjustments */
+    .avatar-circle {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    /* Login page adjustments */
+    .login-page-wrapper .card {
+        margin: 1rem;
+        width: calc(100% - 2rem);
+    }
+}
+
+/* Small Devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .main-content {
+        padding-top: 56px;
+        padding-left: 0 !important;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1040;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Two column layouts */
+    .row.g-3 > [class*="col-md-"] {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    /* Stat cards - 2 columns */
+    .row.g-4 > [class*="col-md-"] {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .stat-card h3 {
+        font-size: 1.875rem;
+    }
+
+    /* Tables */
+    .table {
+        font-size: 0.9rem;
+    }
+
+    /* Buttons can stay side by side */
+    .d-flex.gap-2 {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .d-flex.gap-2 .btn {
+        flex: 1 1 auto;
+        min-width: 120px;
+    }
+}
+
+/* Medium Devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .sidebar {
+        width: 250px;
+    }
+
+    .main-content {
+        margin-left: 250px;
+    }
+
+    .sidebar.collapsed ~ .main-content {
+        margin-left: 80px;
+    }
+
+    /* Stat cards - 2 columns */
+    .row.g-4 > [class*="col-md-"] {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    /* Show hidden columns */
+    .table .d-none.d-md-table-cell {
+        display: table-cell !important;
+    }
+
+    /* Search form */
+    .search-form {
+        max-width: 400px;
+    }
+
+    /* Forms - better spacing */
+    .row.g-3 > [class*="col-md-"] {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Large Devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .sidebar-overlay {
+        display: none !important;
+    }
+
+    .sidebar {
+        transform: translateX(0) !important;
+    }
+
+    /* All hidden columns visible */
+    .table .d-none.d-md-table-cell {
+        display: table-cell !important;
+    }
+
+    /* Search form full width on desktop */
+    .navbar-collapse .search-form {
+        display: flex !important;
+    }
+}
+
+/* ============================================
+   TOUCH DEVICE OPTIMIZATIONS
+   ============================================ */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .nav-link {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+
+    .table-actions .btn-action {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    /* Remove hover effects on touch devices */
+    .btn:hover {
+        transform: none;
+    }
+
+    .stat-card:hover {
+        transform: none;
+    }
+
+    /* Better scrolling */
+    .table-responsive {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+
+    /* Larger form inputs */
+    .form-control,
+    .form-select {
+        min-height: 44px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+
+    /* Better spacing for touch */
+    .pagination .page-link {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* ============================================
+   LANDSCAPE ORIENTATION ADJUSTMENTS
+   ============================================ */
+@media (max-width: 991.98px) and (orientation: landscape) {
+    .stat-card {
+        margin-bottom: 0.75rem;
+    }
+
+    .stat-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .card-body {
+        padding: 0.75rem;
+    }
+
+    /* Reduce vertical spacing */
+    .mb-4 {
+        margin-bottom: 1rem !important;
+    }
+
+    .mt-4 {
+        margin-top: 1rem !important;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    .sidebar,
+    .navbar,
+    .btn,
+    .pagination,
+    .filter-card,
+    .sidebar-overlay {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+
+    .card {
+        border: 1px solid #ddd;
+        page-break-inside: avoid;
+    }
+
+    .table {
+        font-size: 0.75rem;
+    }
+}
+
+/* ============================================
+   UTILITY CLASSES FOR MOBILE
+   ============================================ */
+
+/* Hide on mobile */
+@media (max-width: 767.98px) {
+    .d-mobile-none {
+        display: none !important;
+    }
+}
+
+/* Show only on mobile */
+.d-mobile-only {
+    display: none !important;
+}
+
+@media (max-width: 767.98px) {
+    .d-mobile-only {
+        display: block !important;
+    }
+}
+
+/* Full width on mobile */
+@media (max-width: 767.98px) {
+    .w-mobile-100 {
+        width: 100% !important;
+    }
+}
+
+/* Stack on mobile */
+@media (max-width: 767.98px) {
+    .flex-mobile-column {
+        flex-direction: column !important;
+    }
+}
+
+/* Center on mobile */
+@media (max-width: 767.98px) {
+    .text-mobile-center {
+        text-align: center !important;
+    }
+}
+

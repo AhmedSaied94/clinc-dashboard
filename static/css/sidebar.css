@@ -351,24 +351,7 @@
     white-space: nowrap;
 }
 
-/* Sidebar Overlay (Mobile) */
-.sidebar-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1030;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.sidebar-overlay.active {
-    display: block;
-    opacity: 1;
-}
+/* Sidebar Overlay (Mobile) - Now handled in responsive.css */
 
 /* Main Content Adjustment */
 .main-content {

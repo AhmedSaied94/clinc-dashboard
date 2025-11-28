@@ -21,19 +21,58 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Toggle sidebar visibility (mobile)
   if (sidebarToggle) {
-    sidebarToggle.addEventListener("click", function () {
-      sidebar.classList.toggle("show");
-      sidebarOverlay.classList.toggle("active");
+    sidebarToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      if (sidebar && sidebarOverlay) {
+        sidebar.classList.toggle("show");
+        sidebarOverlay.classList.toggle("active");
+        // Prevent body scroll when sidebar is open
+        if (sidebar.classList.contains("show")) {
+          document.body.style.overflow = "hidden";
+        } else {
+          document.body.style.overflow = "";
+        }
+      }
     });
   }
 
   // Close sidebar when clicking overlay
   if (sidebarOverlay) {
     sidebarOverlay.addEventListener("click", function () {
-      sidebar.classList.remove("show");
-      sidebarOverlay.classList.remove("active");
+      if (sidebar) {
+        sidebar.classList.remove("show");
+        sidebarOverlay.classList.remove("active");
+        document.body.style.overflow = "";
+      }
     });
   }
+
+  // Close sidebar when clicking a link (mobile)
+  if (sidebar) {
+    const sidebarLinks = sidebar.querySelectorAll(".nav-link");
+    sidebarLinks.forEach((link) => {
+      link.addEventListener("click", function () {
+        if (window.innerWidth < 992) {
+          sidebar.classList.remove("show");
+          if (sidebarOverlay) {
+            sidebarOverlay.classList.remove("active");
+          }
+          document.body.style.overflow = "";
+        }
+      });
+    });
+  }
+
+  // Handle window resize
+  window.addEventListener("resize", function () {
+    if (window.innerWidth >= 992 && sidebar) {
+      sidebar.classList.remove("show");
+      if (sidebarOverlay) {
+        sidebarOverlay.classList.remove("active");
+      }
+      document.body.style.overflow = "";
+    }
+  });
 
   // Restore sidebar state from localStorage
   const savedState = localStorage.getItem("sidebarCollapsed");

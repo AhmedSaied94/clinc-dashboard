@@ -1118,31 +1118,7 @@ td .badge.bg-secondary {
     color: var(--text-secondary);
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .sidebar {
-        min-width: 200px;
-        max-width: 200px;
-    }
-    
-    .stat-card h3 {
-        font-size: 1.5rem;
-    }
-    
-    .chart-card {
-        min-height: 300px;
-    }
-}
-
-@media (max-width: 576px) {
-    .sidebar {
-        display: none;
-    }
-    
-    .main-content {
-        padding-left: 0 !important;
-    }
-}
+/* Mobile Responsiveness - Moved to responsive.css for better organization */
 
 /* Modern Animations */
 @keyframes fadeIn {
