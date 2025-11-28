@@ -10,14 +10,27 @@
       <span class="fw-bold">Clinic Dashboard</span>
     </a>
 
-    <!-- Sidebar Toggle Button (Mobile) -->
-    <button
-      class="btn btn-outline-light d-lg-none"
-      type="button"
-      id="sidebarToggle"
-    >
-      <i class="bi bi-list"></i>
-    </button>
+    <!-- Mobile Actions (Sidebar Toggle + Theme Toggle) -->
+    <div class="d-flex align-items-center gap-2 d-lg-none">
+      <!-- Theme Toggle (Mobile) -->
+      <button
+        class="btn btn-outline-light"
+        type="button"
+        id="themeToggleMobile"
+        title="Toggle theme"
+      >
+        <i class="bi bi-moon-fill" id="themeIconMobile"></i>
+      </button>
+      
+      <!-- Sidebar Toggle Button (Mobile) -->
+      <button
+        class="btn btn-outline-light"
+        type="button"
+        id="sidebarToggle"
+      >
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
 
     <!-- Navbar Content -->
     <div class="collapse navbar-collapse" id="navbarContent">
@@ -43,8 +56,8 @@
 
       <!-- Right Side Items -->
       <ul class="navbar-nav ms-auto align-items-center">
-        <!-- Theme Toggle -->
-        <li class="nav-item me-3">
+        <!-- Theme Toggle (Desktop) -->
+        <li class="nav-item me-3 d-none d-lg-block">
           <button
             class="btn btn-outline-light btn-sm"
             id="themeToggle"

@@ -261,15 +261,79 @@
         font-size: 0.9rem;
     }
 
-    #sidebarToggle {
+    #sidebarToggle,
+    #themeToggleMobile {
         padding: 0.375rem 0.75rem;
         font-size: 1.125rem;
+        min-width: 40px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     #themeToggle {
         width: 36px;
         height: 36px;
         padding: 0;
+    }
+
+    /* Mobile theme toggle styling */
+    #themeToggleMobile {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border-radius: 8px;
+    }
+
+    /* Style mobile theme toggle to match desktop */
+    #themeToggleMobile {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #themeToggleMobile:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: rotate(360deg) scale(1.1);
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    #themeToggleMobile i {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 1.125rem;
+    }
+
+    #themeToggleMobile:hover i {
+        transform: scale(1.2);
+    }
+
+    /* Light theme mobile toggle */
+    [data-theme="light"] #themeToggleMobile {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1.5px solid rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+
+    [data-theme="light"] #themeToggleMobile:hover {
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Dark theme mobile toggle */
+    [data-theme="dark"] #themeToggleMobile {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1.5px solid rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    [data-theme="dark"] #themeToggleMobile:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
     }
 }
 
