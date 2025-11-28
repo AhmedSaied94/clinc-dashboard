@@ -1,0 +1,192 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Analytics Dashboard
+- Clinic Dashboard{% endblock %} {% block content %}
+<div class="dashboard-header mb-4">
+  <h1 class="h2 mb-3">
+    <i class="bi bi-graph-up text-primary"></i>
+    Analytics Dashboard
+  </h1>
+</div>
+
+<!-- Filter Panel -->
+<div class="card shadow-sm mb-4 filter-card">
+  <div class="card-body">
+    <h5 class="card-title mb-3">
+      <i class="bi bi-funnel"></i>
+      Filters
+    </h5>
+    <form method="get" id="filterForm">
+      <div class="row g-3">
+        <div class="col-md-3">
+          {{ filter_form.start_date.label_tag }} {{ filter_form.start_date }}
+        </div>
+        <div class="col-md-3">
+          {{ filter_form.end_date.label_tag }} {{ filter_form.end_date }}
+        </div>
+        <div class="col-md-2">
+          {{ filter_form.department.label_tag }} {{ filter_form.department }}
+        </div>
+        <div class="col-md-2">
+          {{ filter_form.specialty.label_tag }} {{ filter_form.specialty }}
+        </div>
+        <div class="col-md-1">
+          {{ filter_form.shift.label_tag }} {{ filter_form.shift }}
+        </div>
+        <div class="col-md-1">
+          {{ filter_form.status.label_tag }} {{ filter_form.status }}
+        </div>
+      </div>
+      <div class="mt-3">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-search"></i>
+          Apply Filters
+        </button>
+        <a href="{% url 'dashboard:home' %}" class="btn btn-outline-secondary">
+          <i class="bi bi-x-circle"></i>
+          Clear
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row g-4 mb-4">
+  <div class="col-xl-3 col-md-6">
+    <div class="card stat-card shadow-sm border-primary">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="text-muted mb-1">Total Placements</p>
+            <h3 class="mb-0">{{ total_placements }}</h3>
+          </div>
+          <div class="stat-icon bg-primary">
+            <i class="bi bi-clipboard-check"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6">
+    <div class="card stat-card shadow-sm border-success">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="text-muted mb-1">Full Time</p>
+            <h3 class="mb-0">{{ full_time_placements }}</h3>
+          </div>
+          <div class="stat-icon bg-success">
+            <i class="bi bi-briefcase-fill"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6">
+    <div class="card stat-card shadow-sm border-info">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="text-muted mb-1">Part Time</p>
+            <h3 class="mb-0">{{ part_time_placements }}</h3>
+          </div>
+          <div class="stat-icon bg-info">
+            <i class="bi bi-briefcase"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6">
+    <div class="card stat-card shadow-sm border-warning">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="text-muted mb-1">Physicians</p>
+            <h3 class="mb-0">{{ unique_physicians }}</h3>
+          </div>
+          <div class="stat-icon bg-warning">
+            <i class="bi bi-people"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Charts Row 1 -->
+<div class="row g-4 mb-4">
+  <div class="col-lg-6">
+    <div class="card chart-card shadow-sm" id="department-stats">
+      <div class="card-body">
+        <h5 class="card-title">
+          <i class="bi bi-building text-primary"></i>
+          Placements by Department
+        </h5>
+        <canvas id="departmentChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card chart-card shadow-sm" id="specialty-stats">
+      <div class="card-body">
+        <h5 class="card-title">
+          <i class="bi bi-heart-pulse text-danger"></i>
+          Placements by Specialty
+        </h5>
+        <canvas id="specialtyChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Charts Row 2 -->
+<div class="row g-4 mb-4">
+  <div class="col-lg-4">
+    <div class="card chart-card shadow-sm" id="shift-stats">
+      <div class="card-body">
+        <h5 class="card-title">
+          <i class="bi bi-clock text-warning"></i>
+          Placements by Shift
+        </h5>
+        <canvas id="shiftChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card chart-card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">
+          <i class="bi bi-list-check text-success"></i>
+          Placements by Status
+        </h5>
+        <canvas id="statusChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card chart-card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">
+          <i class="bi bi-calendar-event text-info"></i>
+          Last 30 Days Trend
+        </h5>
+        <canvas id="timeSeriesChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block extra_js %}
+<script src="{% static 'js/charts.js' %}"></script>
+<script>
+  // Initialize charts with current filter parameters
+  const filterParams = new URLSearchParams(window.location.search).toString();
+  initializeCharts(filterParams);
+</script>
+{% endblock %}

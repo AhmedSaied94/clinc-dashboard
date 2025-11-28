@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}{% if object %}Edit{% else %}Add{% endif %} Placement - Clinic Dashboard{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">
+          <i
+            class="bi bi-{% if object %}pencil{% else %}plus-circle{% endif %} me-2"
+          ></i>
+          {% if object %}Edit Placement{% else %}Add New Placement{% endif %}
+        </h4>
+        <a
+          href="{% url 'dashboard:placement_list' %}"
+          class="btn btn-sm btn-outline-light"
+        >
+          <i class="bi bi-arrow-left me-1"></i>
+          Back to List
+        </a>
+      </div>
+      <div class="card-body">
+        <form method="post" novalidate>
+          {% csrf_token %}
+          
+          <!-- Physician Information Section -->
+          <div class="mb-4">
+            <h5 class="text-primary mb-3">
+              <i class="bi bi-person-badge me-2"></i>Physician Information
+            </h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="{{ form.physician_name.id_for_label }}" class="form-label">
+                  {{ form.physician_name.label }}
+                  {% if form.physician_name.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {{ form.physician_name }}
+                {% if form.physician_name.errors %}
+                <div class="text-danger small">{{ form.physician_name.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.physician_id.id_for_label }}" class="form-label">
+                  {{ form.physician_id.label }}
+                  {% if form.physician_id.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {{ form.physician_id }}
+                {% if form.physician_id.errors %}
+                <div class="text-danger small">{{ form.physician_id.errors }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <!-- Placement Details Section -->
+          <div class="mb-4">
+            <h5 class="text-primary mb-3">
+              <i class="bi bi-calendar-event me-2"></i>Placement Details
+            </h5>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label for="{{ form.date.id_for_label }}" class="form-label">
+                  {{ form.date.label }}
+                  {% if form.date.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {{ form.date }}
+                {% if form.date.errors %}
+                <div class="text-danger small">{{ form.date.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.shift.id_for_label }}" class="form-label">
+                  {{ form.shift.label }}
+                  {% if form.shift.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {{ form.shift }}
+                {% if form.shift.errors %}
+                <div class="text-danger small">{{ form.shift.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.status.id_for_label }}" class="form-label">
+                  {{ form.status.label }}
+                  {% if form.status.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {{ form.status }}
+                {% if form.status.errors %}
+                <div class="text-danger small">{{ form.status.errors }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <!-- Department & Specialty Section -->
+          <div class="mb-4">
+            <h5 class="text-primary mb-3">
+              <i class="bi bi-building me-2"></i>Department & Specialty
+            </h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="{{ form.department.id_for_label }}" class="form-label">
+                  {{ form.department.label }}
+                  {% if form.department.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {{ form.department }}
+                {% if form.department.errors %}
+                <div class="text-danger small">{{ form.department.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.specialty.id_for_label }}" class="form-label">
+                  {{ form.specialty.label }}
+                  {% if form.specialty.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {{ form.specialty }}
+                {% if form.specialty.errors %}
+                <div class="text-danger small">{{ form.specialty.errors }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <!-- Location Section -->
+          <div class="mb-4">
+            <h5 class="text-primary mb-3">
+              <i class="bi bi-geo-alt me-2"></i>Location
+            </h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="{{ form.area.id_for_label }}" class="form-label">
+                  {{ form.area.label }}
+                  {% if form.area.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {{ form.area }}
+                {% if form.area.errors %}
+                <div class="text-danger small">{{ form.area.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.room_number.id_for_label }}" class="form-label">
+                  {{ form.room_number.label }}
+                  {% if form.room_number.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {{ form.room_number }}
+                {% if form.room_number.errors %}
+                <div class="text-danger small">{{ form.room_number.errors }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="mt-4 pt-3 border-top">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-save me-2"></i>
+              Save Placement
+            </button>
+            <a
+              href="{% url 'dashboard:placement_list' %}"
+              class="btn btn-outline-secondary"
+            >
+              <i class="bi bi-x-circle me-2"></i>
+              Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

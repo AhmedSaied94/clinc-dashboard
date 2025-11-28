@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Import Placements - Clinic Dashboard{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">
+          <i class="bi bi-upload me-2"></i>
+          Import Placements
+        </h4>
+        <a
+          href="{% url 'dashboard:placement_list' %}"
+          class="btn btn-sm btn-outline-light"
+        >
+          <i class="bi bi-arrow-left me-1"></i>
+          Back to List
+        </a>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-info mb-4">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <i class="bi bi-info-circle me-2"></i>
+              <strong>Instructions:</strong> Upload an Excel file (.xlsx) with the following columns:
+              <ul class="mb-0 mt-2">
+                <li>Date</li>
+                <li>Shift</li>
+                <li>Physician Name</li>
+                <li>ID</li>
+                <li>Department</li>
+                <li>Speciality</li>
+                <li>Status</li>
+                <li>Area</li>
+                <li>Room Number</li>
+              </ul>
+            </div>
+            <a
+              href="{% url 'dashboard:placement_download_template' %}"
+              class="btn btn-outline-info btn-sm"
+              download
+            >
+              <i class="bi bi-download me-1"></i>
+              Download Template
+            </a>
+          </div>
+          <div class="mt-2">
+            <small class="text-muted">
+              <i class="bi bi-lightbulb me-1"></i>
+              The template includes example rows that you can delete and replace with your data.
+            </small>
+          </div>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          
+          <!-- File Upload Section -->
+          <div class="mb-4">
+            <h5 class="text-primary mb-3">
+              <i class="bi bi-file-earmark-excel me-2"></i>Excel File
+            </h5>
+            <div class="mb-3">
+              <label for="{{ form.excel_file.id_for_label }}" class="form-label">
+                {{ form.excel_file.label }}
+                {% if form.excel_file.field.required %}<span class="text-danger">*</span>{% endif %}
+              </label>
+              {{ form.excel_file }}
+              {% if form.excel_file.help_text %}
+              <small class="form-text text-muted">{{ form.excel_file.help_text }}</small>
+              {% endif %}
+              {% if form.excel_file.errors %}
+              <div class="text-danger small">{{ form.excel_file.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <!-- Options Section -->
+          <div class="mb-4">
+            <h5 class="text-primary mb-3">
+              <i class="bi bi-gear me-2"></i>Import Options
+            </h5>
+            <div class="form-check form-switch mb-3">
+              {{ form.replace }}
+              <label class="form-check-label" for="{{ form.replace.id_for_label }}">
+                {{ form.replace.label }}
+              </label>
+              {% if form.replace.help_text %}
+              <small class="form-text text-muted d-block">{{ form.replace.help_text }}</small>
+              {% endif %}
+              {% if form.replace.errors %}
+              <div class="text-danger small">{{ form.replace.errors }}</div>
+              {% endif %}
+            </div>
+            <div class="alert alert-warning">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              <strong>Warning:</strong> If "Replace existing data" is checked, all existing placements will be permanently deleted before importing new data.
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="mt-4 pt-3 border-top">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-upload me-2"></i>
+              Import Placements
+            </button>
+            <a
+              href="{% url 'dashboard:placement_list' %}"
+              class="btn btn-outline-secondary"
+            >
+              <i class="bi bi-x-circle me-2"></i>
+              Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

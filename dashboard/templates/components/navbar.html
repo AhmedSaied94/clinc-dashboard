@@ -1,0 +1,116 @@
+<!-- Enhanced Navbar with Search and Profile -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="mainNavbar">
+  <div class="container-fluid">
+    <!-- Brand -->
+    <a
+      class="navbar-brand d-flex align-items-center"
+      href="{% url 'dashboard:home' %}"
+    >
+      <i class="bi bi-hospital me-2"></i>
+      <span class="fw-bold">Clinic Dashboard</span>
+    </a>
+
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button
+      class="btn btn-outline-light d-lg-none"
+      type="button"
+      id="sidebarToggle"
+    >
+      <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Navbar Content -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <!-- Search Bar -->
+      <form
+        class="d-flex mx-auto search-form"
+        role="search"
+        style="max-width: 500px"
+      >
+        <div class="input-group">
+          <span class="input-group-text bg-transparent border-end-0">
+            <i class="bi bi-search text-muted"></i>
+          </span>
+          <input
+            class="form-control border-start-0"
+            type="search"
+            placeholder="Search placements, physicians..."
+            aria-label="Search"
+            id="globalSearch"
+          />
+        </div>
+      </form>
+
+      <!-- Right Side Items -->
+      <ul class="navbar-nav ms-auto align-items-center">
+        <!-- Theme Toggle -->
+        <li class="nav-item me-3">
+          <button
+            class="btn btn-outline-light btn-sm"
+            id="themeToggle"
+            title="Toggle theme"
+          >
+            <i class="bi bi-moon-fill" id="themeIcon"></i>
+          </button>
+        </li>
+
+        <!-- User Profile Dropdown -->
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            href="#"
+            id="userDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
+            <div class="avatar-circle me-2">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            <span class="d-none d-md-inline">{{ user.get_full_name|default:user.username }}</span>
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="userDropdown"
+          >
+            <li class="dropdown-header">
+              <div class="text-center">
+                <div class="avatar-circle-large mb-2">
+                  <i class="bi bi-person-fill"></i>
+                </div>
+                <h6 class="mb-0">{{ user.get_full_name|default:user.username }}</h6>
+                <small class="text-muted">{{ user.email|default:"No email" }}</small>
+              </div>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" href="{% url 'dashboard:profile' %}"
+                ><i class="bi bi-person me-2"></i>Profile</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'dashboard:settings' %}"
+                ><i class="bi bi-gear me-2"></i>Settings</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'admin:index' %}"
+                ><i class="bi bi-shield-lock me-2"></i>Admin Panel</a
+              >
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <form method="post" action="{% url 'dashboard:logout' %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; width: 100%; text-align: left;">
+                  <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </button>
+              </form>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,170 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Timeline Analytics
+- Clinic Dashboard{% endblock %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/apexcharts@3.45.0/dist/apexcharts.css"
+/>
+{% endblock %} {% block content %}
+<div class="analytics-page">
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2><i class="bi bi-graph-up me-2"></i>Timeline Analytics</h2>
+      <p class="text-muted">Placement trends over the last 30 days</p>
+    </div>
+    <a href="{% url 'dashboard:home' %}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+    </a>
+  </div>
+
+  <!-- Filter Panel -->
+  <div class="card shadow-sm mb-4 filter-card">
+    <div class="card-body">
+      <h5 class="card-title mb-3">
+        <i class="bi bi-funnel"></i>
+        Filters
+      </h5>
+      <form method="get" id="filterForm">
+        <div class="row g-3">
+          {% if filter_form.department %}
+          <div class="col-md-3">
+            {{ filter_form.department.label_tag }} {{ filter_form.department }}
+          </div>
+          {% endif %}
+          {% if filter_form.specialty %}
+          <div class="col-md-3">
+            {{ filter_form.specialty.label_tag }} {{ filter_form.specialty }}
+          </div>
+          {% endif %}
+          {% if filter_form.shift %}
+          <div class="col-md-3">
+            {{ filter_form.shift.label_tag }} {{ filter_form.shift }}
+          </div>
+          {% endif %}
+          {% if filter_form.status %}
+          <div class="col-md-3">
+            {{ filter_form.status.label_tag }} {{ filter_form.status }}
+          </div>
+          {% endif %}
+        </div>
+        <div class="mt-3">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i>
+            Apply Filters
+          </button>
+          <a href="{% url 'dashboard:analytics_timeline' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-x-circle"></i>
+            Clear
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Stats Card -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card stat-card">
+        <div class="card-body">
+          <h6 class="text-muted">Total Placements</h6>
+          <h3>{{ total_placements }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Card -->
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">Daily Placement Trend (Last 30 Days)</h5>
+    </div>
+    <div class="card-body">
+      <div id="timelineChart"></div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.0/dist/apexcharts.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const timeSeries = {{ time_series_json|safe }};
+      const dates = timeSeries.map(d => d.date);
+      const counts = timeSeries.map(d => d.count);
+
+      const options = {
+          series: [{
+              name: 'Placements',
+              data: counts
+          }],
+          chart: {
+              type: 'area',
+              height: 450,
+              animations: {
+                  enabled: true,
+                  speed: 800
+              },
+              toolbar: {
+                  show: true
+              },
+              zoom: {
+                  enabled: true
+              }
+          },
+          dataLabels: {
+              enabled: false
+          },
+          stroke: {
+              curve: 'smooth',
+              width: 3
+          },
+          fill: {
+              type: 'gradient',
+              gradient: {
+                  shadeIntensity: 1,
+                  opacityFrom: 0.7,
+                  opacityTo: 0.2,
+                  stops: [0, 90, 100]
+              }
+          },
+          colors: ['#667eea'],
+          xaxis: {
+              categories: dates,
+              type: 'datetime',
+              labels: {
+                  datetimeUTC: false,
+                  format: 'MMM dd'
+              }
+          },
+          yaxis: {
+              title: {
+                  text: 'Number of Placements'
+              }
+          },
+          tooltip: {
+              x: {
+                  format: 'dd MMM yyyy'
+              }
+          },
+          grid: {
+              borderColor: '#e7e7e7',
+              row: {
+                  colors: ['#f3f3f3', 'transparent'],
+                  opacity: 0.5
+              }
+          },
+          markers: {
+              size: 4,
+              colors: ['#667eea'],
+              strokeColors: '#fff',
+              strokeWidth: 2,
+              hover: {
+                  size: 7,
+              }
+          }
+      };
+
+      const chart = new ApexCharts(document.querySelector("#timelineChart"), options);
+      chart.render();
+  });
+</script>
+{% endblock %}

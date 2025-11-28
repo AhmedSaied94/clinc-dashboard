@@ -1,0 +1,177 @@
+{% extends 'base.html' %} {% load static %} {% load analytics_filters %} {% block title %}Shift Analytics -
+Clinic Dashboard{% endblock %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/apexcharts@3.45.0/dist/apexcharts.css"
+/>
+{% endblock %} {% block content %}
+<div class="analytics-page">
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2><i class="bi bi-clock-history me-2"></i>Shift Analytics</h2>
+      <p class="text-muted">Placement distribution by shift timing</p>
+    </div>
+    <a href="{% url 'dashboard:home' %}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+    </a>
+  </div>
+
+  <!-- Filter Panel -->
+  <div class="card shadow-sm mb-4 filter-card">
+    <div class="card-body">
+      <h5 class="card-title mb-3">
+        <i class="bi bi-funnel"></i>
+        Filters
+      </h5>
+      <form method="get" id="filterForm">
+        <div class="row g-3">
+          <div class="col-md-3">
+            {{ filter_form.start_date.label_tag }} {{ filter_form.start_date }}
+          </div>
+          <div class="col-md-3">
+            {{ filter_form.end_date.label_tag }} {{ filter_form.end_date }}
+          </div>
+          <div class="col-md-2">
+            {{ filter_form.department.label_tag }} {{ filter_form.department }}
+          </div>
+          <div class="col-md-2">
+            {{ filter_form.specialty.label_tag }} {{ filter_form.specialty }}
+          </div>
+          <div class="col-md-2">
+            {{ filter_form.status.label_tag }} {{ filter_form.status }}
+          </div>
+        </div>
+        <div class="mt-3">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i>
+            Apply Filters
+          </button>
+          <a href="{% url 'dashboard:analytics_shifts' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-x-circle"></i>
+            Clear
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card stat-card">
+        <div class="card-body">
+          <h6 class="text-muted">Total Placements</h6>
+          <h3>{{ total_placements }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Card -->
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">Shift Distribution</h5>
+    </div>
+    <div class="card-body">
+      <div id="shiftChart"></div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="card mt-4">
+    <div class="card-header">
+      <h5 class="mb-0">Shift Statistics</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Shift</th>
+              <th class="text-end">Placements</th>
+              <th class="text-end">Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for stat in shift_stats %}
+            <tr>
+              <td><strong>{{ stat.shift }}</strong></td>
+              <td class="text-end">{{ stat.count }}</td>
+              <td class="text-end">
+                {{ stat.count|percentage:total_placements }}%
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.0/dist/apexcharts.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const shifts = {{ shift_stats_json|safe }};
+      const labels = shifts.map(d => d.shift || 'Unknown');
+      const data = shifts.map(d => d.count);
+
+      const options = {
+          series: [{
+              name: 'Placements',
+              data: data
+          }],
+          chart: {
+              type: 'bar',
+              height: 400,
+              animations: {
+                  enabled: true,
+                  speed: 800
+              }
+          },
+          plotOptions: {
+              bar: {
+                  horizontal: false,
+                  columnWidth: '55%',
+                  borderRadius: 8,
+                  distributed: true
+              }
+          },
+          dataLabels: {
+              enabled: true
+          },
+          colors: ['#667eea', '#764ba2', '#f093fb', '#4facfe'],
+          xaxis: {
+              categories: labels,
+              labels: {
+                  style: {
+                      fontSize: '14px'
+                  }
+              }
+          },
+          yaxis: {
+              title: {
+                  text: 'Number of Placements'
+              }
+          },
+          legend: {
+              show: false
+          },
+          fill: {
+              opacity: 1,
+              gradient: {
+                  shade: 'light',
+                  type: 'vertical',
+                  shadeIntensity: 0.5,
+                  opacityFrom: 0.9,
+                  opacityTo: 0.7
+              }
+          }
+      };
+
+      const chart = new ApexCharts(document.querySelector("#shiftChart"), options);
+      chart.render();
+  });
+</script>
+{% endblock %}

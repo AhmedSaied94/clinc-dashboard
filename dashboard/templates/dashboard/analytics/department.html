@@ -1,0 +1,194 @@
+{% extends 'base.html' %} {% load static %} {% load analytics_filters %} {% block title %}Department
+Analytics - Clinic Dashboard{% endblock %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/apexcharts@3.45.0/dist/apexcharts.css"
+/>
+{% endblock %} {% block content %}
+<div class="analytics-page">
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2><i class="bi bi-building me-2"></i>Department Analytics</h2>
+      <p class="text-muted">Placement distribution across departments</p>
+    </div>
+    <a href="{% url 'dashboard:home' %}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+    </a>
+  </div>
+
+  <!-- Filter Panel -->
+  <div class="card shadow-sm mb-4 filter-card">
+    <div class="card-body">
+      <h5 class="card-title mb-3">
+        <i class="bi bi-funnel"></i>
+        Filters
+      </h5>
+      <form method="get" id="filterForm">
+        <div class="row g-3">
+          <div class="col-md-3">
+            {{ filter_form.start_date.label_tag }} {{ filter_form.start_date }}
+          </div>
+          <div class="col-md-3">
+            {{ filter_form.end_date.label_tag }} {{ filter_form.end_date }}
+          </div>
+          <div class="col-md-2">
+            {{ filter_form.specialty.label_tag }} {{ filter_form.specialty }}
+          </div>
+          <div class="col-md-2">
+            {{ filter_form.shift.label_tag }} {{ filter_form.shift }}
+          </div>
+          <div class="col-md-2">
+            {{ filter_form.status.label_tag }} {{ filter_form.status }}
+          </div>
+        </div>
+        <div class="mt-3">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i>
+            Apply Filters
+          </button>
+          <a href="{% url 'dashboard:analytics_department' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-x-circle"></i>
+            Clear
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card stat-card">
+        <div class="card-body">
+          <h6 class="text-muted">Total Placements</h6>
+          <h3>{{ total_placements }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card stat-card">
+        <div class="card-body">
+          <h6 class="text-muted">Total Departments</h6>
+          <h3>{{ department_stats|length }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Card -->
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">Department Distribution</h5>
+    </div>
+    <div class="card-body">
+      <div id="departmentChart"></div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="card mt-4">
+    <div class="card-header">
+      <h5 class="mb-0">Department Statistics</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Department</th>
+              <th class="text-end">Placements</th>
+              <th class="text-end">Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for stat in department_stats %}
+            <tr>
+              <td><strong>{{ stat.department }}</strong></td>
+              <td class="text-end">{{ stat.count }}</td>
+              <td class="text-end">
+                {{ stat.count|percentage:total_placements }}%
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.0/dist/apexcharts.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Department Chart Data
+      const departments = {{ department_stats_json|safe }};
+      const labels = departments.map(d => d.department || 'Unknown');
+      const data = departments.map(d => d.count);
+
+      // Chart Options
+      const options = {
+          series: data,
+          chart: {
+              type: 'donut',
+              height: 450,
+              animations: {
+                  enabled: true,
+                  speed: 800
+              }
+          },
+          labels: labels,
+          colors: ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe', '#43e97b', '#fa709a', '#fee140'],
+          legend: {
+              position: 'bottom',
+              fontSize: '14px'
+          },
+          dataLabels: {
+              enabled: true,
+              formatter: function(val) {
+                  return Math.round(val) + '%';
+              }
+          },
+          plotOptions: {
+              pie: {
+                  donut: {
+                      size: '65%',
+                      labels: {
+                          show: true,
+                          name: {
+                              fontSize: '18px'
+                          },
+                          value: {
+                              fontSize: '24px',
+                              fontWeight: 'bold'
+                          },
+                          total: {
+                              show: true,
+                              label: 'Total',
+                              fontSize: '16px',
+                              formatter: function() {
+                                  return {{ total_placements }};
+                              }
+                          }
+                      }
+                  }
+              }
+          },
+          responsive: [{
+              breakpoint: 480,
+              options: {
+                  chart: {
+                      height: 300
+                  },
+                  legend: {
+                      position: 'bottom'
+                  }
+              }
+          }]
+      };
+
+      const chart = new ApexCharts(document.querySelector("#departmentChart"), options);
+      chart.render();
+  });
+</script>
+{% endblock %}

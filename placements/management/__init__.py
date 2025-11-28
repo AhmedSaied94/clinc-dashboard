@@ -1,0 +1,1 @@
+# Placements app configuration

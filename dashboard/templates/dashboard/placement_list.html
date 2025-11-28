@@ -1,0 +1,235 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Placements - Clinic
+Dashboard{% endblock %} {% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h2">
+    <i class="bi bi-table text-primary"></i>
+    All Placements
+  </h1>
+  <div class="d-flex gap-2">
+    <a href="{% url 'dashboard:placement_import' %}" class="btn btn-info">
+      <i class="bi bi-upload"></i>
+      Import
+    </a>
+    <a href="{% url 'dashboard:placement_create' %}" class="btn btn-primary">
+      <i class="bi bi-plus-circle"></i>
+      Add New Placement
+    </a>
+  </div>
+</div>
+
+<!-- Search -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <form method="get" class="row g-3" id="searchForm">
+      <div class="col-md-5">
+        <input
+          type="text"
+          name="search"
+          class="form-control"
+          placeholder="Search by name, department, specialty, or area..."
+          value="{{ search_query }}"
+        />
+      </div>
+      <div class="col-md-4">
+        <select name="rows" class="form-select" id="rowsSelect">
+          {% for option in rows_options %}
+          <option value="{{ option }}" {% if current_rows == option|stringformat:"s" %}selected{% endif %}>
+            {{ option }} per page
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-primary w-100">
+          <i class="bi bi-search"></i>
+          Search
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="card shadow-sm">
+  <div class="card-body">
+    {% if placements %}
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Physician</th>
+            <th>Department</th>
+            <th>Specialty</th>
+            <th>Shift</th>
+            <th>Status</th>
+            <th>Location</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for placement in placements %}
+          <tr>
+            <td>{{ placement.date|date:"Y-m-d"|default:"N/A" }}</td>
+            <td>
+              <strong>{{ placement.physician_name|default:"Unknown" }}</strong
+              ><br />
+              <small class="text-muted"
+                >ID: {{ placement.physician_id|default:"N/A" }}</small
+              >
+            </td>
+            <td>{{ placement.department|default:"N/A" }}</td>
+            <td>{{ placement.specialty|default:"N/A" }}</td>
+            <td>
+              {% if placement.shift == 'AM' %}
+              <span class="badge bg-primary">Morning</span>
+              {% elif placement.shift == 'MD' %}
+              <span class="badge bg-info">Midday</span>
+              {% elif placement.shift == 'PM' %}
+              <span class="badge bg-warning">Evening</span>
+              {% elif placement.shift == 'CLOSED' %}
+              <span class="badge bg-secondary">Closed</span>
+              {% else %}
+              <span class="badge bg-light text-dark">{{ placement.shift|default:"N/A" }}</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if placement.status == 'Full Time' %}
+              <span class="badge bg-success">{{ placement.status }}</span>
+              {% elif placement.status == 'Part Time' %}
+              <span class="badge bg-info">{{ placement.status }}</span>
+              {% else %}
+              <span class="badge bg-secondary">{{ placement.status|default:"N/A" }}</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if placement.area or placement.room_number %}
+                {% if placement.area %}{{ placement.area }}{% endif %}{% if placement.area and placement.room_number %} - {% endif %}{% if placement.room_number %}{{ placement.room_number }}{% endif %}
+              {% else %}
+                N/A
+              {% endif %}
+            </td>
+            <td>
+              <div class="table-actions">
+                <a
+                  href="{% url 'dashboard:placement_detail' placement.pk %}"
+                  class="btn btn-action btn-view"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="View Details"
+                >
+                  <i class="bi bi-eye"></i>
+                </a>
+                <a
+                  href="{% url 'dashboard:placement_update' placement.pk %}"
+                  class="btn btn-action btn-edit"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Edit Placement"
+                >
+                  <i class="bi bi-pencil"></i>
+                </a>
+                <a
+                  href="{% url 'dashboard:placement_delete' placement.pk %}"
+                  class="btn btn-action btn-delete"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Delete Placement"
+                  onclick="return confirm('Are you sure you want to delete this placement?');"
+                >
+                  <i class="bi bi-trash"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="d-flex justify-content-between align-items-center mt-4">
+      <div class="text-muted">
+        Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
+      </div>
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mb-0">
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}{% if current_rows %}&rows={{ current_rows }}{% endif %}"
+              >First</a
+            >
+          </li>
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if current_rows %}&rows={{ current_rows }}{% endif %}"
+              >Previous</a
+            >
+          </li>
+          {% endif %}
+
+          <li class="page-item active">
+            <span class="page-link">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+          </li>
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if current_rows %}&rows={{ current_rows }}{% endif %}"
+              >Next</a
+            >
+          </li>
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}{% if current_rows %}&rows={{ current_rows }}{% endif %}"
+              >Last</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+    {% endif %} {% else %}
+    <div class="empty-state">
+      <i class="bi bi-inbox"></i>
+      <h4>No Placements Found</h4>
+      <p>
+        {% if search_query %}No placements match your search.{% else %}Start by
+        adding a new placement.{% endif %}
+      </p>
+      <a href="{% url 'dashboard:placement_create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i>
+        Add New Placement
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+  // Handle rows per page selector
+  document.addEventListener('DOMContentLoaded', function() {
+    const rowsSelect = document.getElementById('rowsSelect');
+    if (rowsSelect) {
+      rowsSelect.addEventListener('change', function() {
+        document.getElementById('searchForm').submit();
+      });
+    }
+    
+    // Initialize Bootstrap tooltips for action buttons
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  });
+</script>
+{% endblock %}
